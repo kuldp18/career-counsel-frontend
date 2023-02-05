@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 import hamburger from '../images/ham.png';
 
@@ -8,14 +9,14 @@ const Navbar = () => {
     <>
       <nav className="navbar">
         <a href="index.html" className="logo">
-          Consulting
+          <Link to="/">Consulting</Link>
         </a>
         <div className={`${showLinks ? 'nav-links mobile-menu' : 'nav-links'}`}>
           <ul>
             <li>
-              <a className="active" href="index.html">
+              <Link className="active" href="index.html" to="/">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
               <a href="aboutus.html">About Us</a>
@@ -38,10 +39,24 @@ const Navbar = () => {
           </ul>
         </div>
         <button id="login-btn" className="btn btn-primary btn-lg">
-          Login
+          <Link
+            to="/login"
+            style={{
+              color: 'white',
+            }}
+          >
+            Login
+          </Link>
         </button>
         <button id="register-btn" className="btn btn-primary btn-lg">
-          Register
+          <Link
+            to="/register"
+            style={{
+              color: 'white',
+            }}
+          >
+            Register
+          </Link>
         </button>
         <img
           src={hamburger}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import './Login.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -6,6 +7,14 @@ import saveImg from '../images/save.webp';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleForm = (e) => {
+    e.preventDefault();
+    console.log(email, password);
+  };
+
   return (
     <>
       <Navbar />
@@ -50,22 +59,30 @@ const Login = () => {
             </button>
           </form> */}
 
-          <form className="w-[100%] flex flex-col gap-3">
+          <form className="w-[100%] flex flex-col gap-3" onSubmit={handleForm}>
             <input
               type="email"
               name="email"
               id="email"
               required
               placeholder="Email*"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
               name="password"
               id="password"
+              required
               placeholder="Password*"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button class="px-5 py-2.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block">
+            <button
+              class="px-5 py-2.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block"
+              type="submit"
+            >
               <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
               <span class="relative group-hover:text-white text-2xl">
                 Login

@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import './Navbar.css';
 import hamburger from '../images/ham.png';
 
 const Navbar = () => {
+  const [showLinks, setShowLinks] = useState(false);
   return (
     <>
       <nav className="navbar">
         <a href="index.html" className="logo">
           Consulting
         </a>
-        <div className="nav-links">
+        <div className={`${showLinks ? 'nav-links mobile-menu' : 'nav-links'}`}>
           <ul>
             <li>
               <a className="active" href="index.html">
@@ -41,7 +43,12 @@ const Navbar = () => {
         <button id="register-btn" className="btn btn-primary btn-lg">
           Register
         </button>
-        <img src={hamburger} alt="hamburger" className="menu-hamburger" />
+        <img
+          src={hamburger}
+          alt="hamburger"
+          className="menu-hamburger"
+          onClick={() => setShowLinks(!showLinks)}
+        />
       </nav>
     </>
   );

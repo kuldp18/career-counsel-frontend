@@ -4,22 +4,73 @@ import './Login.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import saveImg from '../images/save.webp';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { studentSignin, isAuthenticated, authenticate } from '../auth/helper';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const initialState = {
+    email: '',
+    password: '',
+    error: '',
+    loading: false,
+    didRedirect: false,
+  };
+
+  const [formValues, setFormValues] = useState(initialState);
+  const { email, password, error, loading, didRedirect } = formValues;
+  const { user } = isAuthenticated();
+  const [message, setMessage] = useState('hello');
+
+  const handleChange = (field) => (e) => {
+    setFormValues({ ...formValues, error: false, [field]: e.target.value });
+  };
 
   const handleForm = (e) => {
     e.preventDefault();
-    console.log(email, password);
+    setFormValues({ ...formValues, error: false, loading: true });
+    setMessage('Loading...');
+    studentSignin({ email, password }).then((data) => {
+      if (data.error) {
+        setFormValues({ ...formValues, error: data.err, loading: false });
+        setMessage(`Student login failed: ${error}`);
+      } else {
+        authenticate(data, () => {
+          setFormValues({
+            ...formValues,
+            email: '',
+            password: '',
+            error: '',
+            loading: false,
+            didRedirect: true,
+          });
+        });
+        setMessage(`Student login successfull!`);
+      }
+    });
+  };
+
+  const performRedirect = () => {
+    if (didRedirect) {
+      if (user && user.role === 2) {
+        return <Redirect to="/admin/dashboard" />;
+      } else if (user && user.role === 1) {
+        return <Redirect to="/counsellor/dashboard" />;
+      } else {
+        return <Redirect to="/student/dashboard" />;
+      }
+    }
+    if (isAuthenticated()) {
+      return <Redirect to="/" />;
+    }
   };
 
   return (
     <>
+      {performRedirect()}
       <Navbar />
       <section className="landingmainsection">
         <div style={{ flex: '1', margin: '55px' }}>
+          <p className="text-3xl font-extrabold">{message}</p>
           <h2 className="mt-5 mb-5 text-4xl text-purple-600">
             Login to your account
           </h2>
@@ -30,34 +81,6 @@ const Login = () => {
               Create an account
             </Link>
           </h3>
-          {/* <form className="mainform">
-            <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                placeholder="Enter email"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="exampleInputPassword1">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="exampleInputPassword1"
-                placeholder="Password"
-              />
-            </div>
-            <button
-              style={{ margin: '15px' }}
-              type="submit"
-              className="btn btn-primary btn-lg"
-            >
-              Login
-            </button>
-          </form> */}
 
           <form className="w-[100%] flex flex-col gap-3" onSubmit={handleForm}>
             <input
@@ -67,7 +90,7 @@ const Login = () => {
               required
               placeholder="Email*"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange('email')}
             />
             <input
               type="password"
@@ -76,7 +99,7 @@ const Login = () => {
               required
               placeholder="Password*"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange('password')}
             />
 
             <button

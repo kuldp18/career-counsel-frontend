@@ -4,33 +4,81 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import saveImg from '../images/save.webp';
 import { Link } from 'react-router-dom';
+import { studentSignup } from '../auth/helper';
 
 const Register = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [hsc, setHsc] = useState('');
-  const [ssc, setSsc] = useState('');
+  const initialFormState = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    hsc: '',
+    ssc: '',
+    error: true,
+    success: false,
+  };
+
+  const [message, setMessage] = useState('');
+
+  const [formValues, setFormValues] = useState(initialFormState);
+  const { firstName, lastName, email, password, hsc, ssc, error, success } =
+    formValues;
+
+  const handleChange = (field) => (e) => {
+    setFormValues({ ...formValues, error: false, [field]: e.target.value });
+  };
 
   const handleForm = (e) => {
     e.preventDefault();
-    const data = {
-      firstName,
-      lastName,
-      email,
-      password,
-      hsc: parseInt(hsc) || 0,
-      ssc: parseInt(ssc) || 0,
-    };
-
-    console.log(data);
+    setFormValues({ ...formValues, error: false });
+    // set ssc and hsc marks to 0 if not provided
+    if (hsc === '') {
+      setFormValues({ ...formValues, hsc: 0 });
+    }
+    if (ssc === '') {
+      setFormValues({ ...formValues, ssc: 0 });
+    }
+    // convert ssc and hsc marks to numbers
+    const hscMarks = Number(hsc);
+    const sscMarks = Number(ssc);
+    studentSignup({ firstName, lastName, email, password, hscMarks, sscMarks })
+      .then((data) => {
+        if (data.error) {
+          setFormValues({ ...formValues, error: data.err, success: false });
+          setMessage(`Student Signup Failed! Error: ${error}`);
+        } else {
+          setFormValues({
+            ...formValues,
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            hsc: '',
+            ssc: '',
+            error: '',
+            success: true,
+          });
+          setMessage('Student Signup Successful!');
+        }
+      })
+      .catch((err) => {
+        console.log('Error in signing up');
+        console.error(err);
+      });
   };
+
   return (
     <>
       <Navbar />
       <section className="landingmainsection">
         <div style={{ flex: '1', margin: '55px' }}>
+          <p
+            className={`text-3xl font-extrabold ${
+              success ? 'text-green-600' : 'text-red-600'
+            }`}
+          >
+            {message}
+          </p>
           <h2 className="mt-5 mb-5 text-4xl text-purple-600">
             Create an account
           </h2>
@@ -41,6 +89,7 @@ const Register = () => {
               Login here
             </Link>
           </h3>
+
           <form className="w-[100%] flex flex-col gap-3" onSubmit={handleForm}>
             <input
               type="text"
@@ -49,7 +98,7 @@ const Register = () => {
               maxLength="32"
               required
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={handleChange('firstName')}
             />
             <input
               type="text"
@@ -58,7 +107,7 @@ const Register = () => {
               maxLength="32"
               required
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={handleChange('lastName')}
             />
             <input
               type="email"
@@ -67,7 +116,7 @@ const Register = () => {
               required
               placeholder="Email*"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange('email')}
             />
             <input
               type="password"
@@ -77,7 +126,7 @@ const Register = () => {
               minLength="8"
               value={password}
               required
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange('password')}
             />
             <input
               type="text"
@@ -85,7 +134,7 @@ const Register = () => {
               id="ssc"
               placeholder="SSC Marks"
               value={ssc}
-              onChange={(e) => setSsc(e.target.value)}
+              onChange={handleChange('ssc')}
             />
             <input
               type="text"
@@ -93,7 +142,7 @@ const Register = () => {
               id="hsc"
               placeholder="HSC Marks"
               value={hsc}
-              onChange={(e) => setHsc(e.target.value)}
+              onChange={handleChange('hsc')}
             />
             <button
               class="px-5 py-2.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block"

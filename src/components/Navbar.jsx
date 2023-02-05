@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import './Navbar.css';
 import hamburger from '../images/ham.png';
+import { studentSignout, isAuthenticated } from '../auth/helper';
 
-const Navbar = () => {
+const Navbar = ({ history }) => {
   const [showLinks, setShowLinks] = useState(false);
   return (
     <>
@@ -25,42 +26,72 @@ const Navbar = () => {
               <a href="education.html">Education</a>
             </li>
             <li>
-              <a href="agritech.html">AgriTech</a>
-            </li>
-            <li>
-              <a href="energy.html">Energy</a>
-            </li>
-            <li>
-              <a href="waste.html">Waste-Management</a>
-            </li>
-            <li>
               <a href="contact.html">Contact us</a>
             </li>
+
+            {isAuthenticated() && isAuthenticated().student.role === 0 && (
+              <li>
+                <Link to="/student/dashboard">Dashboard</Link>
+              </li>
+            )}
+            {isAuthenticated() && isAuthenticated().student.role === 1 && (
+              <li>
+                <Link to="/counsellor/dashboard">Dashboard</Link>
+              </li>
+            )}
+            {isAuthenticated() && isAuthenticated().student.role === 2 && (
+              <li>
+                <Link to="/admin/dashboard">Dashboard</Link>
+              </li>
+            )}
           </ul>
         </div>
-        <button id="login-btn" className="btn btn-primary btn-lg bg-purple-500">
-          <Link
-            to="/login"
-            style={{
-              color: 'white',
+
+        {!isAuthenticated() && (
+          <>
+            <button
+              id="login-btn"
+              className="btn btn-primary btn-lg bg-purple-500"
+            >
+              <Link
+                to="/login"
+                style={{
+                  color: 'white',
+                }}
+              >
+                Login
+              </Link>
+            </button>
+            <button
+              id="register-btn"
+              className="btn btn-primary btn-lg bg-purple-500"
+            >
+              <Link
+                to="/register"
+                style={{
+                  color: 'white',
+                }}
+              >
+                Register
+              </Link>
+            </button>
+          </>
+        )}
+
+        {isAuthenticated() && (
+          <button
+            id="login-btn"
+            className="btn btn-primary btn-lg bg-purple-500 text-white"
+            onClick={() => {
+              studentSignout(() => {
+                history.push('/');
+              });
             }}
           >
-            Login
-          </Link>
-        </button>
-        <button
-          id="register-btn"
-          className="btn btn-primary btn-lg bg-purple-500"
-        >
-          <Link
-            to="/register"
-            style={{
-              color: 'white',
-            }}
-          >
-            Register
-          </Link>
-        </button>
+            Signout
+          </button>
+        )}
+
         <img
           src={hamburger}
           alt="hamburger"
@@ -72,4 +103,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default withRouter(Navbar);

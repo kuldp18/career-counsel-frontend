@@ -38,7 +38,7 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <button id="login-btn" className="btn btn-primary btn-lg">
+        <button id="login-btn" className="btn btn-primary btn-lg bg-purple-500">
           <Link
             to="/login"
             style={{
@@ -48,7 +48,10 @@ const Navbar = () => {
             Login
           </Link>
         </button>
-        <button id="register-btn" className="btn btn-primary btn-lg">
+        <button
+          id="register-btn"
+          className="btn btn-primary btn-lg bg-purple-500"
+        >
           <Link
             to="/register"
             style={{

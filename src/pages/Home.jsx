@@ -14,7 +14,7 @@ function App() {
       <Navbar />
       <section className="landingmainsection">
         <div className="heading">
-          <p className="firstheading">Why Choose Us</p>
+          <p className="text-2xl text-purple-600 font-bold">Why Choose Us</p>
           <p className="secondaryheading">
             Lorem ipsum dolor sit amet consectetur
           </p>

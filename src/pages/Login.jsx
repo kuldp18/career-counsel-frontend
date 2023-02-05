@@ -11,13 +11,15 @@ const Login = () => {
       <Navbar />
       <section className="landingmainsection">
         <div style={{ flex: '1', margin: '55px' }}>
-          <h1 style={{ margin: '15px' }} className="footheading">
-            Counseling
-          </h1>
-          <h2 style={{ margin: '15px' }}>Login to your account</h2>
+          <h2 className="mt-5 mb-5 text-4xl text-purple-600">
+            Login to your account
+          </h2>
           <hr />
-          <h3 style={{ margin: '15px' }}>
-            Need an account? <Link to="/register">Create an account</Link>
+          <h3 className="mt-5 mb-5 text-base">
+            Need an account?{' '}
+            <Link to="/register" className="text-purple-500">
+              Create an account
+            </Link>
           </h3>
           {/* <form className="mainform">
             <div className="form-group">
@@ -48,21 +50,7 @@ const Login = () => {
             </button>
           </form> */}
 
-          <form className="w-[100%] flex flex-col gap-2">
-            <input
-              type="text"
-              placeholder="First Name*"
-              minLength="3"
-              maxLength="32"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Last Name*"
-              minLength="3"
-              maxLength="32"
-              required
-            />
+          <form className="w-[100%] flex flex-col gap-3">
             <input
               type="email"
               name="email"
@@ -76,8 +64,7 @@ const Login = () => {
               id="password"
               placeholder="Password*"
             />
-            <input type="text" name="ssc" id="ssc" placeholder="SSC Marks" />
-            <input type="text" name="hsc" id="hsc" placeholder="HSC Marks" />
+
             <button class="px-5 py-2.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block">
               <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
               <span class="relative group-hover:text-white text-2xl">

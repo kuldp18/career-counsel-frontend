@@ -11,11 +11,10 @@ body {
   font-family: 'Nunito', sans-serif;
   line-height: 1.5;
   color: #333;
-  background-color: #EDE7F68F;
+  background-color: #ede7f68f;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
 }
 
 /* Headings */
@@ -54,7 +53,7 @@ h6 {
 
 /* Buttons */
 button,
-input[type="submit"] {
+input[type='submit'] {
   background-color: #007bff;
   color: #fff;
   padding: 10px 20px;
@@ -64,14 +63,14 @@ input[type="submit"] {
 }
 
 button:hover,
-input[type="submit"]:hover {
+input[type='submit']:hover {
   background-color: #0069d9;
 }
 
 /* Form elements */
-input[type="text"],
-input[type="email"],
-input[type="password"],
+input[type='text'],
+input[type='email'],
+input[type='password'],
 textarea {
   padding: 10px;
   font-size: 16px;
@@ -105,7 +104,6 @@ label {
   max-width: 550px;
   margin-left: 4px;
   animation: fadeInUp 2s ease-in-out;
-
 }
 
 .description {
@@ -138,7 +136,6 @@ label {
   letter-spacing: 0.5px;
   animation: fadeInUp 2s ease-in-out;
   margin-top: 20px;
-
 }
 
 .headingimage {
@@ -147,7 +144,7 @@ label {
 }
 
 .landingmainsection {
-  background-color: #EDE7F68F;
+  background-color: #ede7f68f;
   padding-top: 180px;
   padding-bottom: 50px;
   display: flex;
@@ -155,9 +152,19 @@ label {
 }
 
 @media (max-width: 600px) {
-
   .headingimage,
   .heading {
     flex: 1 1 100%;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

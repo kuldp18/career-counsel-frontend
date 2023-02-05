@@ -1,16 +1,17 @@
 import './Navbar.css';
+import hamburger from '../images/ham.png';
 
 const Navbar = () => {
   return (
     <>
-      <nav class="navbar">
-        <a href="index.html" class="logo">
+      <nav className="navbar">
+        <a href="index.html" className="logo">
           Consulting
         </a>
-        <div class="nav-links">
+        <div className="nav-links">
           <ul>
             <li>
-              <a class="active" href="index.html">
+              <a className="active" href="index.html">
                 Home
               </a>
             </li>
@@ -34,13 +35,13 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <button id="login-btn" class="btn btn-primary btn-lg">
+        <button id="login-btn" className="btn btn-primary btn-lg">
           Login
         </button>
-        <button id="register-btn" class="btn btn-primary btn-lg">
+        <button id="register-btn" className="btn btn-primary btn-lg">
           Register
         </button>
-        <img src="images/ham.png" alt="menu hamburger" class="menu-hamburger" />
+        <img src={hamburger} alt="hamburger" className="menu-hamburger" />
       </nav>
     </>
   );
